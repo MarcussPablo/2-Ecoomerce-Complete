@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react'
 import { MdOutlineShoppingCart } from "react-icons/md";
-import { BsCartDash } from "react-icons/bs";
-import { BsCartPlus } from "react-icons/bs";
+import { CiSearch } from "react-icons/ci";
 
 const App = () => {
 
   const [products, setProducts] = useState([])
+  const [cart, setCart] = useState([])
+  const [show, setShow] = useState('hide')
+  const [searchItem, SetsearchItem] = useState('')
+  const [searchQuery, SetsearchQuery] = useState('')
+  const [adicionado, setAdicionado] = useState("")
 
   useEffect(() => {
     fetch('https://fakestoreapi.com/products')
@@ -13,7 +17,6 @@ const App = () => {
       .then((data) => (setProducts(data)))
   }, [])
 
-  const [cart, setCart] = useState([])
   const addToCart = (id) => {
     const selectedProduct = products.find(product => id === product.id)
     const existIncart = cart.find(product => id === product.id)
@@ -23,11 +26,22 @@ const App = () => {
         setCart(cart.map((product) => (
           product.id === id ? { ...product, quantity: product.quantity + 1 } : product
         )))
+        
       } else {
         setCart([...cart, { ...selectedProduct, quantity: 1 }])
       }
     }
+    setAdicionado('Produto adicionado')
   }
+
+useEffect(()=>{
+  if(adicionado){
+    const timer = setInterval(() => {
+      setAdicionado('')
+    }, 1000);
+    return ()=> clearTimeout(timer)
+  }
+},[adicionado])
 
   const removeFromCart = (id) =>{
     const productToRemove = cart.find(product => id === product.id)
@@ -42,17 +56,31 @@ const App = () => {
     }
   }
 
-  const [show, setShow] = useState('hide')
-
   const toogleCartVisible = () => {
     setShow((prev) =>
       prev === "hide" ? "show" : "hide")
   }
+
+  const handleSearchQuery = ()=>{
+    SetsearchQuery(searchItem)
+    SetsearchItem('')
+  }
+
+
   return (
     <div >
       <div className="container">
         <header>
           <h1>My E-commerce</h1>
+          <div className="search-bar">
+          <input type="text"
+          value={searchItem}
+          onChange={(e)=>SetsearchItem(e.target.value)}
+          />
+          <button className='search-button' onClick={handleSearchQuery}><CiSearch /></button>
+          </div>
+         
+          
           <ul>
             <li>HOME</li>
             <li onClick={toogleCartVisible}><MdOutlineShoppingCart style={{fontSize:'x-large'}}/>
@@ -72,9 +100,14 @@ const App = () => {
           ))}
           <h4 className="total">Total em compras = R${cart.reduce((acc, product)=>acc + (product.price*product.quantity),0).toFixed(2)}</h4>
         </div>
+        <div className={adicionado}>{adicionado}</div>
         <div className="roww">
-          {products.map((product) => (
-            <div className="coll">
+          {products
+          .filter(product=>
+            product.title.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+          .map((product) => (
+            <div key={product.id}  className="coll">
               <div className="cardd">
                 <img src={product.image} alt="" className="cards-img-top" />
                 <div className="cardd-body">
