@@ -130,11 +130,20 @@ img {
   .cart-container{
     flex-direction: column;
   }
+  img{
+    height: 200px;
+    width: 7em;
+  }
 }
 
-@media screen and (max-width:400px) {
+@media screen and (max-width:375px) {
   .adicionado{ 
     width: 100%;
     margin-left: -.3em;
+
+  }
+  img{
+    height: 200px;
+    width: 7em;
   }
 }
