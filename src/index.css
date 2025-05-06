@@ -8,13 +8,6 @@
 
 }
 
-body {
-  background:url(../public/images/blue-hd-1920-x-1080-background-blhilhybna0agsjy.jpg); 
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  min-height: 100vh;
-}
 
 
 
@@ -80,6 +73,7 @@ img {
   border-radius: .5em;
   overflow: hidden;
   z-index: 1;
+  top: 20px;
 }
 .cardd{
   height: 22em;
@@ -120,6 +114,11 @@ img {
   header{
     flex-direction: column;
   }
+  .adicionado{ 
+    width: 100%;
+    margin-left: -.3em;
+    top:50px
+  }
 
 }
 @media screen and (max-width:780px) {
@@ -134,13 +133,18 @@ img {
     height: 200px;
     width: 7em;
   }
+  .adicionado{ 
+    width: 100%;
+    margin-left: -.3em;
+    top:50px
+  }
 }
 
 @media screen and (max-width:375px) {
   .adicionado{ 
     width: 100%;
     margin-left: -.3em;
-
+    top:50px
   }
   img{
     height: 200px;
